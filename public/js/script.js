@@ -42,8 +42,6 @@ var displayConstraints = {
 async function getLocalStreamCreate() {
     creator = true;
     console.log("User is creator: ", creator);
-    
-    // await initRTCPeerConnection();
 
     try{
         const stream = await navigator.mediaDevices.getUserMedia(displayConstraints);
@@ -65,8 +63,6 @@ async function getLocalStreamCreate() {
 async function getLocalStreamJoin() {
     creator = false;
     console.log("User is creator: ", creator);
-
-    // await initRTCPeerConnection();
 
     try{
         const stream = await navigator.mediaDevices.getUserMedia(displayConstraints);
@@ -161,67 +157,6 @@ function onIceCandidateFunction(event) {
     }
 };
 
-// socket.on('message', onMessage);
-
-// async function onMessage(payload) { 
-//     console.log("Received payload: ", {payload});
-//     try{
-//         if(payload.description){
-//             const offerCollision = (payload.description.type === "offer") && (makingOffer || peerConnection.signalingState !== "stable");
-//             ignoreOffer = !polite && offerCollision;
-//             if(ignoreOffer){
-//                 return;
-//             }
-//             await peerConnection.setRemoteDescription(payload.description);
-//             if(payload.description.type === "offer"){
-//                 await peerConnection.setLocalDescription();
-//                 var localDescription = peerConnection.localDescription;
-//                 payload = {
-//                     description: localDescription,
-//                     candidate: null
-//                 };
-//                 if(payload){
-//                     console.log("Sending payload: ", {payload});
-//                     socket.emit("message", payload, roomName);
-//                 }
-//             }
-//         }else if(payload.candidate){
-//             try{
-//                 var iceCandidate = new RTCIceCandidate(payload.candidate);
-//                 await peerConnection.addIceCandidate(iceCandidate);
-//             } catch(err){
-//                 if(!ignoreOffer){
-//                     throw err;
-//                 }
-//             }
-//         }
-//     } catch(err){
-//         console.error(err);
-//     }
-// }
-
-// function initRTCPeerConnection() {
-//     peerConnection = new RTCPeerConnection(iceServer);
-
-//     peerConnection.onicecandidate = onIceCandidateFunction;
-//     peerConnection.ontrack = onTrackFunction;
-//     peerConnection.onnegotiationneeded = onNegotiationNeededFunction;
-//     peerConnection.oniceconnectionstatechange = onIceConnectionStateChangeFunction;
-// }
-
-// function onIceCandidateFunction(event) {
-//     if(event.candidate){
-//         payload = { 
-//             description: null,
-//             candidate: event.candidate
-//         }
-//         if(payload){
-//             console.log("Sending payload: ", {payload});
-//             socket.emit("message", payload, roomName);
-//         }
-//     }
-// };
-
 function onTrackFunction(event) {
     event.track.onunmute = () => {
         console.log("Received remote track: ", event.track);
@@ -234,26 +169,6 @@ function onTrackFunction(event) {
         };
     };
 };
-
-// async function onNegotiationNeededFunction() {
-//     try{
-//         makingOffer = true;
-//         await peerConnection.setLocalDescription();
-//         var localDescription = peerConnection.localDescription;
-//         payload = {
-//             description: localDescription,
-//             candidate: null
-//         };
-//         if(payload){
-//             console.log("Sending payload: ", {payload});
-//             socket.emit("message", payload, roomName);
-//         }
-//     } catch (err) {
-//         console.error(err);
-//     } finally{
-//         makingOffer = false;
-//     }
-// }
 
 function onIceConnectionStateChangeFunction() {
     console.log("Ice connection state change: ", peerConnection.iceConnectionState);

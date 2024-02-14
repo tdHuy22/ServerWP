@@ -81,12 +81,6 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log("User disconnected: ", socket.id);
     });
-
-    // socket.on("message", (payload, roomName) => {
-    //     console.log("Payload");
-    //     console.log({payload});
-    //     socket.broadcast.to(roomName).emit("message", payload);
-    // });
 });
 
 // ================================== SOCKET.IO ====================================
