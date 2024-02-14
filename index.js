@@ -4,6 +4,7 @@ const {createServer} = require('https');
 const express = require('express');
 const {Server} = require('socket.io');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const userRoute = require('./routes/userRoute');
 // ==================================== IMPORTS ====================================
@@ -18,12 +19,13 @@ const httpsServer = createServer({key, cert}, app);
 
 const io = new Server(httpsServer,{
     cors:{
-        origin: "https://localhost",
+        origin: "*",
         methods: ["GET", "POST"]
     }
 });
 // ================================ ASSIGN_VARIABLES ===============================
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');

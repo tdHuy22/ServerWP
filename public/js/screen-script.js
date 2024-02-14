@@ -1,4 +1,4 @@
-var socket = io("https://localhost");
+var socket = io();
 
 var remoteVideo = document.getElementById('screen-video');
 
@@ -36,7 +36,7 @@ async function kitAvailable() {
     await initRTCPeerConnection();
 
     try{
-        const stream = await navigator.mediaDevices.getDisplayMedia(displayConstraints);
+        const stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
         userMediaStream = stream;
         userMediaStream.getTracks().forEach((track) => {
             peerConnection.addTrack(track, userMediaStream);

@@ -15,5 +15,6 @@ const loadScreen = async (req, res) => {
 }
 
 module.exports = {
-    loadIndex
+    loadIndex,
+    loadScreen
 }

@@ -1,4 +1,4 @@
-var socket = io("https://localhost");
+var socket = io();
 
 var videoChatForm = document.getElementById('video-chat-form');
 var videoChatRooms = document.getElementById('video-chat-rooms');
