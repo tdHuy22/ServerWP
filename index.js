@@ -55,38 +55,15 @@ io.on("connection", (socket) => {
         console.log(rooms);
     });
 
-    socket.on("user-ready", (roomName) => {
-        console.log("User is ready: ", socket.id);
-        socket.broadcast.to(roomName).emit("user-ready");
-    });
-
-    socket.on("candidate", (candidate, roomName) => {
-        console.log("Received candidate: " + candidate + " from " + socket.id + " in room: " + roomName);
-        console.log({candidate});
-        socket.broadcast.to(roomName).emit("candidate", candidate);
-    });
-
-    socket.on("offer", (offer, roomName) => {
-        console.log("Received offer: " + offer + " from " + socket.id + " in room: " + roomName);
-        console.log({offer});
-        socket.broadcast.to(roomName).emit("offer", offer);
-    });
-
-    socket.on("answer", (answer, roomName) => {
-        console.log("Received answer: " + answer + " from " + socket.id + " in room: " + roomName);
-        console.log({answer})
-        socket.broadcast.to(roomName).emit("answer", answer);
+    socket.on("message", (payload, roomName) => {
+        console.log("Payload");
+        console.log({payload});
+        socket.broadcast.to(roomName).emit("message", payload);
     });
 
     socket.on("disconnect", () => {
         console.log("User disconnected: ", socket.id);
     });
-
-    // socket.on("message", (payload, roomName) => {
-    //     console.log("Payload");
-    //     console.log({payload});
-    //     socket.broadcast.to(roomName).emit("message", payload);
-    // });
 });
 
 // ================================== SOCKET.IO ====================================
