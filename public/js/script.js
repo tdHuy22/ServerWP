@@ -46,7 +46,7 @@ async function getLocalStreamCreate() {
     await initRTCPeerConnection();
 
     try{
-        const stream = await navigator.mediaDevices.getUserMedia(displayConstraints);
+        const stream = await navigator.mediaDevices.getDisplayMedia(displayConstraints);
         userMediaStream = stream;
         userMediaStream.getTracks().forEach((track) => {
             peerConnection.addTrack(track, userMediaStream);
@@ -72,7 +72,7 @@ async function getLocalStreamJoin() {
     await initRTCPeerConnection();
 
     try{
-        const stream = await navigator.mediaDevices.getUserMedia(displayConstraints);
+        const stream = await navigator.mediaDevices.getUserMedia({video: false, audio: true});
         userMediaStream = stream;
         userMediaStream.getTracks().forEach((track) => {
             peerConnection.addTrack(track, userMediaStream);
