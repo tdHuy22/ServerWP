@@ -1,14 +1,8 @@
-var socket = io();
+var socket = io("https://localhost");
 
-var videoChatForm = document.getElementById('video-chat-form');
-var videoChatRooms = document.getElementById('video-chat-rooms');
+var remoteVideo = document.getElementById('screen-video');
 
-var roomInput = document.getElementById('roomName');
-var localVideo = document.getElementById('user-video');
-var remoteVideo = document.getElementById('peer-video');
-var joinButton = document.getElementById('join');
-
-var creator = false;
+var creator = true;
 var makingOffer = false;
 var ignoreOffer = false;
 var polite = true;
@@ -18,29 +12,25 @@ var payload = {
     candidate: null
 }
 
-var roomName = null;
+const roomName = "kit";
+
 var userMediaStream = null;
 
 var peerConnection = null;
 
-var iceServer = {
+const iceServer = {
     iceServers: [
         { urls: "stun:stun.services.mozilla.com" },
         { urls: "stun:stun.l.google.com:19302" }
     ]
 }
 
-var displayConstraints = {
-    video: {
-        width: 500,
-        height: 500
-    },
-    cursor: "always",
-    audio: false
+var mediaConstraints = {
+    video: false,
+    audio: true
 };
 
-async function getLocalStreamCreate() {
-    creator = true;
+async function kitAvailable() {
     console.log("User is creator: ", creator);
     
     await initRTCPeerConnection();
@@ -51,13 +41,6 @@ async function getLocalStreamCreate() {
         userMediaStream.getTracks().forEach((track) => {
             peerConnection.addTrack(track, userMediaStream);
         });
-        videoChatForm.style.display = 'none';
-        localVideo.srcObject = stream;
-        localVideo.onloadedmetadata = () => {
-            localVideo.play();
-        };
-        console.log("User is ready: ");
-        socket.emit('user-ready', roomName);
     } catch (err) {
         alert('Please allow access to your camera and microphone')
         console.log(err);
@@ -65,46 +48,11 @@ async function getLocalStreamCreate() {
     }
 }
 
-async function getLocalStreamJoin() {
-    creator = false;
-    console.log("User is creator: ", creator);
+socket.emit("kit-online", roomName);
 
-    await initRTCPeerConnection();
-
-    try{
-        const stream = await navigator.mediaDevices.getUserMedia({video: false, audio: true});
-        userMediaStream = stream;
-        userMediaStream.getTracks().forEach((track) => {
-            peerConnection.addTrack(track, userMediaStream);
-        });
-        videoChatForm.style.display = 'none';
-        localVideo.srcObject = stream;
-        localVideo.onloadedmetadata = () => {
-            localVideo.play();
-        };
-    } catch (err) {
-        alert('Please allow access to your camera and microphone')
-        console.log(err);
-        console.error(err);
-    }
-}
-
-joinButton.addEventListener('click', () => {
-    
-    if (roomInput.value === "") {
-        alert('Please enter a room name');
-    } else {
-        roomName = roomInput.value;
-        console.log("Room name: ", roomName);
-        socket.emit('join-socket-room', roomName);
-        console.log("User is joining room: ", roomName);
-    }
-});
-
-socket.on('new-room-created', getLocalStreamCreate);
-socket.on('another-user-joined', getLocalStreamJoin);
-socket.on('room-full', () => {
-    alert('Room is full');
+socket.on("kit-available", kitAvailable);
+socket.on("kit-error", (roomName) => {
+    console.log("KIT is not available: ", roomName);
 });
 
 socket.on('message', onMessage);

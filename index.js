@@ -32,27 +32,43 @@ app.set('views', join(__dirname, 'views'));
 app.use(express.static(join(__dirname, 'public')));
 
 app.use('/', userRoute);
+app.use('/screen', userRoute);
 // =================================== MIDDLEWARE ==================================
 
 io.on("connection", (socket) => {
     console.log("User connected: ", socket.id);
+    
+    socket.on("kit-online", (roomName) => {
+        var kitRooms = io.sockets.adapter.rooms;
+        var kitRoom = kitRooms.get(roomName);
+        if(kitRoom === undefined){
+            socket.join(roomName);
+            socket.emit("kit-available");
+        }else if(kitRoom.size === 1){
+            socket.emit("kit-error", roomName);
+            console.log("Kit is not available: ", roomName);
+        }else{
+            socket.emit("kit-error", roomName);
+            console.log("Kit is not available: ", roomName);
+        }
+        console.log({kitRooms});
+    });
 
-    socket.on("join-socket-room", (roomName) => {
+    socket.on("user-online", (roomName) => {
         var rooms = io.sockets.adapter.rooms;
         var room = rooms.get(roomName);
         if(room === undefined){
-            socket.join(roomName);
-            socket.emit("new-room-created");
-            console.log("New room created: ", roomName);
+            console.log("KIT not available: ", roomName);
+            socket.emit("kit-not-available", roomName);
         }else if(room.size === 1){
             socket.join(roomName);
-            socket.emit("another-user-joined");
-            console.log("Another user joined: ", roomName);
+            socket.emit("user-access-success");
+            console.log("User access success: ", roomName);
         }else{
-            socket.emit("room-full");
-            console.log("Room is full: ", roomName);
+            socket.emit("kit-used", roomName);
+            console.log("KIT is being used: ", roomName);
         }
-        console.log(rooms);
+        console.log({rooms});
     });
 
     socket.on("message", (payload, roomName) => {
@@ -70,5 +86,6 @@ io.on("connection", (socket) => {
 
 httpsServer.listen(PORT, hostname, () => {
     console.log(`Server running at https://${hostname}:${PORT}/`);
+    console.log(`Screen running at https://${hostname}:${PORT}/screen`);
 });
 // =================================== SERVER ======================================
