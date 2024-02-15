@@ -1,4 +1,4 @@
-var socket = io();
+var socket = io("https://192.168.1.10:8000");
 
 var videoChatForm = document.getElementById('video-chat-form');
 var videoChatRooms = document.getElementById('video-chat-rooms');

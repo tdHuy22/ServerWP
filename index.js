@@ -10,7 +10,7 @@ const userRoute = require('./routes/userRoute');
 // ==================================== IMPORTS ====================================
 const app = express();
 const PORT = process.env.PORT || 8000;
-const hostname = 'localhost';
+const hostname = ["localhost", "192.168.1.10", "192.168.1.8"];
 
 const key = readFileSync('./cert/cert.key');
 const cert = readFileSync('./cert/cert.crt');
@@ -19,7 +19,7 @@ const httpsServer = createServer({key, cert}, app);
 
 const io = new Server(httpsServer,{
     cors:{
-        origin: "*",
+        origin: ["https://localhost", "https://192.168.1.10", " https://192.168.1.8"],
         methods: ["GET", "POST"]
     }
 });
@@ -87,7 +87,7 @@ io.on("connection", (socket) => {
 // ================================== SOCKET.IO ====================================
 
 httpsServer.listen(PORT, hostname, () => {
-    console.log(`Server running at https://${hostname}:${PORT}/`);
-    console.log(`Screen running at https://${hostname}:${PORT}/screen`);
+    console.log(`Server running at https://${hostname[1]}:${PORT}/`);
+    console.log(`Screen running at https://${hostname[1]}:${PORT}/screen`);
 });
 // =================================== SERVER ======================================
