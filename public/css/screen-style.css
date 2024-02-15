@@ -1,16 +1,10 @@
-#video-container{
-    min-width: 100%;
-    min-height: 100%;
-}
-
 #screen-video{
-    margin: auto;
-    padding: auto;
-    min-width: 100%;
-    min-height: 100%;
     position: absolute;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center;
     top: 0;
     left: 0;
-    width: auto;
-    height: auto;
+    z-index: 1;
 }

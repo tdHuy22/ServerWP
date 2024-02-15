@@ -26,23 +26,17 @@ const iceServer = {
 }
 
 var mediaConstraints = {
-    video: false,
-    audio: true
+    video: true,
+    cursor: "always",
+    audio: false
 };
 
 async function kitAvailable() {
     console.log("User is creator: ", creator);
     
-    await initRTCPeerConnection();
-
     try{
-        const stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-        userMediaStream = stream;
-        userMediaStream.getTracks().forEach((track) => {
-            peerConnection.addTrack(track, userMediaStream);
-        });
+        await initRTCPeerConnection();
     } catch (err) {
-        alert('Please allow access to your camera and microphone')
         console.log(err);
         console.error(err);
     }

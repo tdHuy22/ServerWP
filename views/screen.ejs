@@ -2,7 +2,8 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
+        <meta name="viewport" content="width=device-width ,initial-scale=1">
         <title>Video Chat App</title>
         <link href="css/screen-style.css" rel="stylesheet" />
         <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
@@ -11,9 +12,7 @@
         <link rel="manifest" href="favicon/site.webmanifest">
     </head>
     <body>
-        <div id="video-container">
-            <video id="screen-video"></video>
-        </div>
+        <video id="screen-video" muted></video>
 
     </body>
     <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
