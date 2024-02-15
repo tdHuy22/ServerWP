@@ -52,7 +52,7 @@ async function userAccessSuccess() {
             localVideo.play();
         };
     } catch (err) {
-        alert('Please allow access to your camera and microphone')
+        alert('Please allow access to media devices');
         console.log(err);
         console.error(err);
     }
