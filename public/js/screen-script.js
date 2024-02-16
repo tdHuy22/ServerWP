@@ -1,5 +1,6 @@
 var socket = io("https://192.168.1.10:8000");
 
+var kitAnoun = document.getElementById('kit-anoun');
 var remoteVideo = document.getElementById('screen-video');
 
 var creator = true;
@@ -116,6 +117,7 @@ function onTrackFunction(event) {
         if(remoteVideo.srcObject) return;
         console.log("Received remote stream: ", event.streams[0]);
         remoteVideo.srcObject = event.streams[0];
+        kitAnoun.style.display = "none";
         remoteVideo.onloadedmetadata = () => {
             console.log("Remote video is loaded");
             remoteVideo.play();
